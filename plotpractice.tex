@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{utf8}{inputenc}
+\usepackage{pgfplots}
+\pgfplotsset{width = 10cm}
+
+\begin{document}
+
+\section{2-D plots}
+\begin{tikzpicture}
+    \begin{axis}[xmin = -3*pi, xmax = 3*pi , ymin = -1, ymax = 1 ,
+    axis lines = middle,
+    xtick = { -3*pi,-5*pi/2,-2*pi,-3*pi/2,-1*pi,-1*pi/2,0,pi/2,pi,3*pi/2, 2*pi, 5*pi/2, 3*pi},
+    xticklabels ={$-3\pi$,$\frac{-5}{2}\pi$,$-2\pi$,$\frac{-3}{2}\pi$,$-\pi$,$\frac{-1}{2}\pi$,$0$, $\frac{\pi}{2}$, $\pi$, $\frac{3}{2}\pi$, $2\pi$, $\frac{5}{2}\pi$,$3\pi$},
+    xticklabel style = {anchor = north west},'
+    xmajorgrids = true,
+    yticklabel = {\empty} 
+    ]
+    \addplot[color = blue, domain = -3*pi:3*pi , samples = 500]{sin(deg(x))>0 ?sin(deg(x)):0};
+    % \addplot[green,thick,domain = -3*pi:3*pi, samples=2, smooth]{0.65};
+    \end{axis}
+\end{tikzpicture}
+
+
+\end{document}

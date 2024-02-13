@@ -1,0 +1,57 @@
+
+\documentclass{article}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={Frequency (Hz)},
+      ylabel={Gain (dB)},
+      title={Low-Pass and High-Pass RC Filters},
+      grid=major,
+      legend entries={Low-Pass, High-Pass, Theory LP, Theory HP},
+      legend pos=north east,
+    ]
+    
+    % Randomly select values for R and C for Low-Pass
+    \pgfmathsetmacro{\Rlp}{random(1000, 1000000)}
+    \pgfmathsetmacro{\Clp}{random(100e-12, 100e-9)}
+    
+    % Calculate cutoff frequency for Low-Pass
+    \pgfmathsetmacro{\cutoffFreqLP}{1 / (2 * pi * \Rlp * \Clp)}
+    
+    % Randomly select values for R and C for High-Pass
+    \pgfmathsetmacro{\Rhp}{random(1000, 1000000)}
+    \pgfmathsetmacro{\Chp}{random(100e-12, 100e-9)}
+    
+    % Calculate cutoff frequency for High-Pass
+    \pgfmathsetmacro{\cutoffFreqHP}{1 / (2 * pi * \Rhp * \Chp)}
+    
+    % Plot Low-Pass frequency response
+    \addplot[blue, domain=1:1000000, samples=100, thick] {20 * log10(1 / sqrt(1 + (x * \Clp * \Rlp)^2))};
+    
+    % Plot High-Pass frequency response
+    \addplot[red, domain=1:1000000, samples=100, thick] {20 * log10(sqrt(1 / (1 + (x * \Chp * \Rhp)^2)))};
+    
+    % Plot theoretical cutoff frequencies
+    \draw[dashed, cyan] ({\cutoffFreqLP}, -3) -- ({\cutoffFreqLP}, 3);
+    \node[cyan, below] at ({\cutoffFreqLP}, -3) {\scriptsize{$f_{\text{cutoff,LP}}$}};
+    
+    \draw[dashed, magenta] ({\cutoffFreqHP}, -3) -- ({\cutoffFreqHP}, 3);
+    \node[magenta, above] at ({\cutoffFreqHP}, 3) {\scriptsize{$f_{\text{cutoff,HP}}$}};
+    
+    % Plot theoretical frequency response for Low-Pass
+    \addplot[dashed, cyan, domain=1:1000000, samples=100, thick] {20 * log10(1 / sqrt(1 + (x * \Clp * \Rlp)^2))};
+    
+    % Plot theoretical frequency response for High-Pass
+    \addplot[dashed, magenta, domain=1:1000000, samples=100, thick] {20 * log10(sqrt(1 / (1 + (x * \Chp * \Rhp)^2)))};
+    
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Low-Pass and High Pass RC Filters Frequency Response}
+\end{figure}
+
+\end{document}

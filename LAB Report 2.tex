@@ -1,0 +1,37 @@
+umentclass{article}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={Frequency (Hz)},
+      ylabel={Gain (dB)},
+      title={Low-Pass RC Filter Frequency Response},
+      grid=major,
+      legend entries={Simulation, Theory},
+      legend pos=north east,
+    ]
+    
+    % Randomly select values for R and C
+    \pgfmathsetmacro{\Rvalue}{random(1000, 1000000)}
+    \pgfmathsetmacro{\Cvalue}{random(100e-12, 100e-9)}
+    
+    % Calculate cutoff frequency
+    \pgfmathsetmacro{\cutoffFreq}{1 / (2 * pi * \Rvalue * \Cvalue)}
+    
+    % Plot simulation data
+    \addplot[blue, domain=1:1000000, samples=100, thick] {20 * log10(1 / sqrt(1 + (x * \Cvalue * \Rvalue)^2))};
+    
+    % Plot theoretical cutoff frequency
+    \draw[dashed, red] ({\cutoffFreq}, -3) -- ({\cutoffFreq}, 3);
+    \node[red, below] at ({\cutoffFreq}, -3) {\scriptsize{$f_{\text{cutoff}}$}};
+    
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Random Low-Pass RC Filter Frequency Response}
+\end{figure}
+
+\end{document}

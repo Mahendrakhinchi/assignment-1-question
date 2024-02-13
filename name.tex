@@ -1,0 +1,32 @@
+\documentclass[11pt, border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{math, calc}
+\begin{document}
+
+\tikzmath{%
+  real \mainTW, \secondT, \angleW, \piW, \boundW;
+  \piW = 3.14159;
+  \mainTW = \piW/2 +.1;
+  \secondT = .22*\piW;
+  \angleW = {atan(cos(\mainTW r))};
+  \boundW = 5.3*\piW;
+}
+\begin{tikzpicture}[every node/.style={scale=.8}, xscale=.7]
+  \draw[->, thin] (-.5, 0) -- (\boundW, 0) node[below=1ex] {$t$};
+  \draw[->, thin] (0, -.5) -- (0, 1.5);
+  \begin{scope}
+    \clip (-.5, 0) rectangle (\boundW, 1.5);
+    \draw[dashed, very thin,
+    variable=\t, domain=-.5:\boundW, samples=80] plot (\t, {sin(\t r)});
+
+  \draw[blue, thick, variable=\t]
+  [domain=0:\secondT, samples=30] plot (\t, {sin(\t r)})
+  \foreach \j in {0, 1, 2}{%
+    [domain={2*\j*\piW +\secondT}:{2*\j*\piW +\mainTW}, samples=30]
+    plot (\t, {sin(\t r)})
+    to[out=\angleW, in=179]
+    ($({2*(\j+1)*\piW +\secondT}, {sin(\secondT r)})$)
+  };  
+  \end{scope}
+\end{tikzpicture}
+\end{document}
